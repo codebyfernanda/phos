@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phos | Ilumine sua próxima leitura</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Open+Sans:wght@400;600;700&family=Playfair+Display:ital,wght@1,700&display=swap" rel="stylesheet">
+</head>
+<body class="pagina-login">
+    <header class="cabecalho-phos">
+        <nav class="navegacao-principal" aria-label="Navegação Principal">
+            <div class="container-logo-nav">
+                <img src="/assets/phos-logo.png" alt="Phos" class="logo-imagem-nav">
+            </div>
+            
+            <div class="botoes-nav">
+                <button type="button" class="btn-ghost">sobre nós</button>
+                <button type="button" class="btn-ghost">manifesto</button>
+            </div>
+        </nav>
+    </header>
+
+    <main class="area-apresentacao">
+        <div class="container-central">
+            <section class="secao-boas-vindas">
+                <span class="badge-phos" aria-live="polite">Meta 2026 Ativa</span>
+                <h1 class="titulo-principal">
+                    Sua estante, <br>
+                    <span class="destaque-italico">sua história.</span>
+                </h1>
+                <div class="subtitulo">
+                    <p>A rede social para leitores brasileiros que buscam <br> organizar memórias e iluminar narrativas.</p>
+                </div>
+            </section>
+
+            <aside class="card-login">
+                <div class="card-header">
+                    <h2>Bem-vindo de volta!</h2>
+                    <p>Acesse seu diário de leitura</p>
+                </div>
+                <form id="formulario-login">
+                    <div class="grupo-entrada">
+                        <label for="usuario">USUÁRIO</label>
+                        <input type="text" id="usuario" placeholder="Digite seu usuário" required autocomplete="username">
+                    </div>
+                    <div class="grupo-entrada">
+                        <label for="senha">SENHA</label>
+                        <input type="password" id="senha" placeholder="••••••••" required autocomplete="current-password">
+                    </div>
+                    <button type="submit" class="botao-entrar">Iluminar Estante ➜</button>
+                </form>
+            </aside>
+        </div>
+    </main>
+
+    <footer class="rodape-principal">
+        <div class="rodape-conteudo">
+            <div class="rodape-coluna">
+                <span class="titulo-rodape">Phos</span>
+                <nav class="links-rodape" aria-label="Links úteis">
+                    <a href="#">Privacidade</a>
+                    <a href="#">Acessibilidade</a>
+                </nav>
+            </div>
+            <div class="rodape-coluna">
+                <span class="titulo-rodape">Conecte-se</span>
+                <div class="icones-redes">
+                    <a href="https://github.com/codebyfernanda" target="_blank" rel="noopener">GitHub</a>
+                </div>
+            </div>
+        </div>
+        <div class="rodape-direitos">
+            <small>&copy; 2026 Phos. Desenvolvido em São Paulo por @codebyfernanda.</small>
+        </div>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>

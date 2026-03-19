@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phos | Diário e Estante</title>
+    <link rel="stylesheet" href="style-dash.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Open+Sans:wght@400;600;700&family=Playfair+Display:ital,wght@1,700&display=swap" rel="stylesheet">
+</head>
+<body class="corpo-dashboard">
+    <header class="cabecalho-phos">
+        <div class="container-logo-nav">
+            <img src="assets/phos-logo.png" alt="Logo da Phos" class="logo-imagem-nav">
+        </div>
+        
+        <div class="container-busca" id="container-busca-wrapper">
+            <label for="entrada-busca" class="sr-only">Buscar livro</label>
+            <input type="text" placeholder="Iluminar nova leitura (título ou autor)..." id="entrada-busca">
+            <button type="button" id="botao-buscar" aria-label="Buscar">➜</button>
+        </div>
+
+        <div class="menu-perfil">
+            <div class="info-user">
+                <span>Olá, <strong>Fernanda</strong></span>
+                <button onclick="PhosApp.logout()" class="btn-ghost btn-pequeno">Sair da conta</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container-principal">
+        <aside class="barra-lateral-stats">
+            <article class="cartao-metrica glass-effect">
+                <div class="header-card-stats">
+                    <h2>Meta de Leitura</h2>
+                    <span class="ano-tag">2026</span>
+                </div>
+                <div class="progresso-circular" aria-label="Gráfico de progresso da meta">
+                    <svg width="140" height="140" viewBox="0 0 140 140">
+                        <circle class="anel-fundo" cx="70" cy="70" r="62"></circle>
+                        <circle class="anel-preenchimento" id="progresso-circulo" cx="70" cy="70" r="62"></circle>
+                    </svg>
+                    <div class="texto-meta">
+                        <span id="porcentagem-meta">0%</span>
+                        <small><strong id="lidos-atual">0</strong> / <button id="total-meta" onclick="PhosApp.mudarMeta()" title="Editar Meta" class="btn-texto-link">12</button></small>
+                    </div>
+                </div>
+            </article>
+
+            <article class="cartao-metrica glass-effect">
+                <h2>Distribuição Visual</h2>
+                <div class="canvas-container">
+                    <canvas id="graficoGeneros" aria-label="Gráfico de gêneros literários lidos"></canvas>
+                </div>
+            </article>
+        </aside>
+
+        <section class="area-conteudo">
+            <header class="cabecalho-secao">
+                <div class="titulo-grupo">
+                    <div class="titulo-grupo">
+                        <h1 class="font-editorial">Minha Estante</h1>   
+                            <nav class="toggle-filtros" aria-label="Filtros de estante">
+                                <button class="toggle-btn ativo" data-filter="todos" onclick="PhosApp.filtrar('todos')">todos</button>
+                                <button class="toggle-btn" data-filter="lido" onclick="PhosApp.filtrar('lido')">lidos</button>
+                                <button class="toggle-btn" data-filter="lendo" onclick="PhosApp.filtrar('lendo')">lendo</button>
+                                <button class="toggle-btn" data-filter="na-lista" onclick="PhosApp.filtrar('na-lista')">na lista</button>
+                            </nav>
+                    </div>
+                </div>
+                <p id="contador" class="contador-vibe" aria-live="polite">0 obras catalogadas</p>
+            </header>
+            
+            <div id="container-resultados" class="grade-livros">
+                </div>
+        </section>
+    </main>
+
+    <div id="modal-busca" class="modal-sobreposicao" role="dialog" aria-modal="true" aria-labelledby="titulo-modal-busca">
+        <div class="conteudo-modal glass-effect">
+            <button onclick="PhosApp.fecharModal('modal-busca')" class="botao-fechar" aria-label="Fechar busca">&times;</button>
+            <h2 id="titulo-modal-busca" class="font-editorial">Resultados da Busca</h2>
+            <div id="container-resultados-modal" class="grade-livros-modal"></div>
+        </div>
+    </div>
+
+    <div id="modal-critica" class="modal-sobreposicao" role="dialog" aria-modal="true" aria-labelledby="critica-titulo">
+        <div class="conteudo-modal critica-layout glass-effect">
+            <button onclick="PhosApp.fecharModal('modal-critica')" class="botao-fechar" aria-label="Fechar diário">&times;</button>
+            <div class="critica-grid">
+                <div class="critica-capa">
+                    <img id="critica-img" src="" alt="Capa do Livro em foco">
+                </div>
+                <div class="critica-form">
+                    <h2 id="critica-titulo" class="font-editorial">Título</h2>
+                    
+                    <select id="critica-status" class="seletor-status-modal">
+                        <option value="na-lista">Na Lista</option>
+                        <option value="lendo">Lendo</option>
+                        <option value="lido">Lido</option>
+                    </select>
+
+                    <div class="estrelas-rating" id="rating-input" role="radiogroup" aria-label="Avaliação">
+                        <button type="button" role="radio" aria-checked="false" data-v="1">★</button>
+                        <button type="button" role="radio" aria-checked="false" data-v="2">★</button>
+                        <button type="button" role="radio" aria-checked="false" data-v="3">★</button>
+                        <button type="button" role="radio" aria-checked="false" data-v="4">★</button>
+                        <button type="button" role="radio" aria-checked="false" data-v="5">★</button>
+                    </div>
+                    <label for="critica-texto" class="sr-only">Seu diário</label>
+                    <textarea id="critica-texto" placeholder="Escreva sua jornada com esta obra..."></textarea>
+                    <button onclick="PhosApp.salvarCritica()" class="botao-entrar">Registrar na História</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="rodape-principal">
+        <div class="rodape-conteudo">
+            <div class="rodape-coluna">
+                <span class="titulo-rodape">Phos</span>
+                <nav class="links-rodape" aria-label="Links úteis">
+                    <a href="#">Privacidade</a>
+                    <a href="#">Acessibilidade</a>
+                </nav>
+            </div>
+            <div class="rodape-coluna">
+                <span class="titulo-rodape">Conecte-se</span>
+                <div class="icones-redes">
+                    <a href="https://github.com/codebyfernanda" target="_blank" rel="noopener">GitHub</a>
+                </div>
+            </div>
+        </div>
+        <div class="rodape-direitos">
+            <small>&copy; 2026 Phos. Desenvolvido em São Paulo por @codebyfernanda.</small>
+        </div>
+    </footer>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

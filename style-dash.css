@@ -1,0 +1,712 @@
+/* =======================================================================================
+    PHOS 2026 - POLIMENTO VISUAL E ANIMAÇÕES (STYLE-DASH.CSS)
+    ====================================================================================== */
+
+:root {
+    --retina: #161144;      /* Deep Night - Azul escuro Phos */
+    --nitidez: #90abce;     /* Serene Blue - Azul claro */
+    --enfoque: #eabf42;     /* Golden Hour - Amarelo */
+    --creme: #fdfaf1;       /* Fundo Editorial - Off-white */
+    --branco: #ffffff;
+    --raio: 24px;
+    --sombra: 0 20px 60px rgba(22, 17, 68, 0.12);
+    --transicao: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Lembrete: a importância da quebra de linha. Em desenvolvimento, evite minificar colocar tudo na 
+    mesma linha) o código manualmente. Escrever uma propriedade por linha facilita a leitura humana 
+    e ajuda muito no versionamento (Git), pois o "diff" mostrará exatamente qual propriedade foi alterada,
+    e não a linha inteira. */
+
+* { 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box; 
+    -webkit-font-smoothing: antialiased; 
+}
+
+/* UTILITÁRIO: Acessibilidade Visual (Esconde o texto, mas mantém para leitores de tela)
+    A inclusão de classes utilitárias fofocadas puramente em acessibilidade (a11y) demonstra 
+    uma empatia e um domínio técnico que elevam a qualidade do software. */
+
+.sr-only {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0, 0, 0, 0); border: 0;
+}
+
+/* =======================================================================================
+    SCROLLBAR CUSTOMIZADA (Confere uma vibe meio premium para a aplicação)
+    ====================================================================================== */
+
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: var(--creme); }
+::-webkit-scrollbar-thumb { background: var(--nitidez); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: var(--retina); }
+
+/* =======================================================================================
+    BODY E BACKGROUND
+    ====================================================================================== */
+
+body.corpo-dashboard {
+    font-family: 'Open Sans', sans-serif;
+    color: var(--retina);
+    background-color: var(--creme);
+    min-height: 100vh;
+    position: relative;
+    z-index: 0;
+}
+
+body.corpo-dashboard::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-image: url('/assets/phos-fundo.jpg');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.05;
+    z-index: -1;
+}
+
+/* =======================================================================================
+    CABEÇALHO (NAV BAR)
+    ====================================================================================== */
+
+
+.cabecalho-phos {
+    background-color: var(--retina);
+    padding: 1.2rem 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    /* Gerenciamento de Z-Index. Usar '100' aqui e '9999' mais abaixo nas modais é o que 
+    chamamos de "Magic Numbers". O ideal em projetos maiores é ter variáveis no ':root'
+    (ex: '--z-nav: 10; --z-modal: 50;') para evitar a "Guerra dos Z-Indexes". */
+    z-index: 100;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+}
+
+.logo-imagem-nav { 
+    height: 45px; 
+    filter: brightness(0) invert(1);
+}
+
+.container-busca {
+    display: flex;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(234, 191, 66, 0.4);
+    border-radius: 30px;
+    padding: 8px 20px;
+    width: 400px;
+    transition: var(--transicao);
+}
+
+/* Uso importante do `:focus-within`, que garante quando o usuário estiver navegando 
+    pelo teclado (Tab) e focar no input dentro da div, o container inteiro reaja 
+    visualmente. Ou seja, isso é acessibilidade na prática! */
+
+.container-busca:focus-within {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: var(--enfoque);
+}
+
+.container-busca input { 
+    background: transparent; 
+    border: none; 
+    color: var(--branco); 
+    width: 100%; 
+    outline: none; 
+    font-size: 0.95rem;
+}
+
+.container-busca input::placeholder { 
+    color: rgba(255, 255, 255, 0.6); 
+}
+
+.container-busca button { 
+    background: none; 
+    border: none; 
+    color: var(--enfoque); 
+    cursor: pointer; 
+    font-size: 1.2rem; 
+}
+
+.info-user { 
+    display: flex; 
+    align-items: center; 
+    gap: 15px; 
+    color: var(--nitidez); 
+    font-size: 0.9rem; }
+
+.info-user strong { 
+    color: var(--branco); 
+    font-weight: 700; }
+
+.btn-ghost {
+    background: transparent; 
+    border: 2px solid var(--enfoque); 
+    color: var(--enfoque);
+    padding: 6px 14px; 
+    border-radius: 12px; 
+    font-weight: 700; 
+    font-size: 0.8rem;
+    text-transform: lowercase; 
+    cursor: pointer; 
+    transition: var(--transicao); 
+    font-family: inherit;
+}
+.btn-ghost:hover { 
+    background: var(--enfoque); 
+    color: var(--retina); 
+    box-shadow: 0 4px 10px rgba(234, 191, 66, 0.3); 
+}
+
+/* =======================================================================================
+    LAYOUT PRINCIPAL E ESTATÍSTICAS
+    ====================================================================================== */
+
+.container-principal {
+    display: grid; 
+    grid-template-columns: 320px 1fr; 
+    gap: 40px; 
+    max-width: 1400px; 
+    margin: 0 auto; 
+    padding: 40px 5%; 
+    align-items: start;
+}
+
+.barra-lateral-stats { 
+    position: sticky; 
+    top: 100px; 
+    display: flex; 
+    flex-direction: column; 
+    gap: 25px; 
+}
+
+.cartao-metrica {
+    background: var(--branco); 
+    padding: 25px; 
+    border-radius: var(--raio); 
+    box-shadow: var(--sombra);
+    position: relative; 
+    overflow: hidden; 
+    border: 1px solid rgba(0,0,0,0.05); 
+    transition: var(--transicao);
+}
+.cartao-metrica:hover { 
+    transform: translateY(-3px); 
+}
+
+.cartao-metrica::before {
+    content: ''; 
+    position: absolute; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 5px;
+    background: linear-gradient(90deg, var(--nitidez), var(--enfoque));
+}
+
+.header-card-stats { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    margin-bottom: 20px; 
+}
+
+.cartao-metrica h2, .cartao-metrica h3 { 
+    font-family: 'Montserrat', sans-serif; 
+    font-size: 1.1rem; 
+    color: var(--retina); 
+}
+
+.ano-tag { 
+    background: rgba(144, 171, 206, 0.2); 
+    color: var(--retina); 
+    padding: 4px 10px; 
+    border-radius: 8px; 
+    font-weight: 800; 
+    font-size: 0.75rem; 
+}
+
+.progresso-circular { 
+    position: relative; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+}
+
+.anel-fundo { 
+    fill: none; 
+    stroke: rgba(144, 171, 206, 0.15); 
+    stroke-width: 8; 
+}
+
+/* Animações usando 'stroke-dashoffset' em SVGs são elegantes e performáticas, 
+    pois usam aceleração de hardware (GPU). */
+
+.anel-preenchimento { 
+    fill: none; 
+    stroke: var(--enfoque); 
+    stroke-width: 8; 
+    stroke-linecap: round; 
+    transform: rotate(-90deg); 
+    transform-origin: center; 
+    transition: stroke-dashoffset 1.5s cubic-bezier(0.16, 1, 0.3, 1); 
+}
+
+.texto-meta { 
+    position: absolute; 
+    text-align: center; 
+}
+
+.texto-meta span { 
+    display: block; 
+    font-size: 1.8rem; 
+    font-weight: 800; 
+    font-family: 'Montserrat', sans-serif; 
+    color: var(--retina); 
+}
+
+.texto-meta small { 
+    color: var(--nitidez); 
+    font-weight: 600; 
+}
+
+.btn-texto-link { 
+    background: none; 
+    border: none; 
+    color: var(--enfoque); 
+    font-weight: 800; 
+    cursor: pointer; 
+    text-decoration: underline; 
+    font-family: inherit; 
+    font-size: 0.9rem; 
+}
+
+.canvas-container { 
+    position: relative; 
+    width: 100%; 
+    height: 220px; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    margin-top: 15px;
+}
+
+/* =======================================================================================
+    ÁREA DA ESTANTE E CARDS
+    ====================================================================================== */
+
+.cabecalho-secao { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: flex-end; 
+    margin-bottom: 30px; 
+    border-bottom: 2px solid rgba(144, 171, 206, 0.2); 
+    padding-bottom: 15px; 
+}
+
+.font-editorial { 
+    font-family: 'Montserrat', 
+    sans-serif; font-size: 2.2rem; 
+    font-weight: 800;
+    letter-spacing: -1px; 
+}
+
+.contador-vibe { 
+    font-weight: 700; 
+    color: var(--nitidez); 
+    font-size: 0.9rem; 
+    text-transform: uppercase; 
+    letter-spacing: 1px;
+}
+
+/* =======================================================================================
+    TOGGLE DE FILTROS (aka Segmented Control)
+    ====================================================================================== */
+.titulo-grupo { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 15px; 
+}
+
+.toggle-filtros { 
+    display: inline-flex; 
+    background: rgba(144, 171, 206, 0.15); /* Fundo suave usando A cor 'nitidez' */
+    border-radius: 30px; 
+    padding: 4px; 
+    width: fit-content;
+}
+
+.toggle-btn { 
+    background: transparent; 
+    border: none; 
+    color: var(--retina); 
+    padding: 6px 18px; 
+    border-radius: 26px; 
+    font-weight: 700; 
+    font-size: 0.8rem; 
+    cursor: pointer; 
+    transition: var(--transicao); 
+    text-transform: lowercase; 
+    font-family: inherit;
+}
+
+.toggle-btn:hover:not(.ativo) { 
+    color: var(--enfoque); /* Brilho dourado ao passar o mouse, sem fundo */
+}
+
+/* O estado ativo do botão (a "pílula" selecionada) */
+.toggle-btn.ativo { 
+    background: var(--retina); 
+    color: var(--branco); 
+    box-shadow: 0 4px 10px rgba(22, 17, 68, 0.15); 
+}
+.grade-livros { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); 
+    gap: 30px; 
+}
+
+/* Animação de entrada dos cards na estante */
+@keyframes fadeInCard {
+    from { 
+        opacity: 0; 
+        transform: translateY(20px); 
+    }
+
+    to { opacity: 1; 
+        transform: translateY(0);
+    }
+}
+
+.cartao-livro { 
+    background: var(--branco); 
+    border-radius: 16px; 
+    overflow: hidden; 
+    box-shadow: var(--sombra); 
+    transition: var(--transicao); 
+    position: relative; 
+    border: 1px solid rgba(0,0,0,0.03); 
+    cursor: pointer; 
+    animation: fadeInCard 0.5s ease-out forwards;
+}
+
+.cartao-livro:hover { 
+    transform: translateY(-8px); 
+    box-shadow: 0 25px 50px rgba(22, 17, 68, 0.15); 
+    border-color: var(--nitidez); 
+}
+
+/* Isso confere um efeito de Zoom na Imagem ao passar o mouse */
+.cartao-livro img { 
+    width: 100%; 
+    height: 280px; 
+    object-fit: cover; 
+    transition: transform 0.6s ease; 
+}
+
+.cartao-livro:hover img { 
+    transform: scale(1.05); 
+}
+
+.info-livro { 
+    padding: 15px; 
+    position: relative; 
+    background: var(--branco); /* Garante que o fundo cubra a imagem em zoom */ 
+}
+
+.tag-categoria { 
+    font-size: 0.65rem; 
+    font-weight: 800; 
+    text-transform: uppercase; 
+    color: var(--nitidez); 
+    letter-spacing: 1px; 
+}
+
+.info-livro h3 { 
+    font-size: 1.1rem; 
+    margin: 8px 0; 
+    line-height: 1.2; 
+    font-family: 'Montserrat', sans-serif; 
+}
+
+.badge-status { 
+    position: absolute; 
+    top: 10px; 
+    right: 10px; 
+    background: rgba(22, 17, 68, 0.9); 
+    color: var(--branco); 
+    padding: 4px 10px; 
+    border-radius: 6px; 
+    font-size: 0.65rem; 
+    font-weight: 800; 
+    text-transform: uppercase; 
+    backdrop-filter: blur(4px); 
+    border: 1px solid var(--enfoque); 
+    z-index: 2;
+}
+
+/* =======================================================================================
+    MODAIS (BUSCA E DIÁRIO DE CRÍTICA)
+    ====================================================================================== */
+
+@keyframes modalFadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+/* Z-index 9999. Funciona perfeitamente aqui, mas a dica das variáveis globais de Z-index para manter a previsibilidade. 
+    O uso de 'backdrop-filter: blur(8px)' confere uma estética maissofisticada. */
+.modal-sobreposicao { 
+    display: none; 
+    position: fixed; 
+    inset: 0; 
+    z-index: 9999; 
+    background: rgba(22, 17, 68, 0.85); 
+    align-items: center; 
+    justify-content: center; 
+    backdrop-filter: blur(8px);
+}
+
+.conteudo-modal { 
+    background: var(--creme); 
+    width: 100%; 
+    max-width: 900px;
+    max-height: 85vh;
+    border-radius: var(--raio); 
+    position: relative; 
+    padding: 40px; 
+    box-shadow: 0 25px 50px rgba(0,0,0,0.3); 
+    overflow-y: auto; 
+    animation: modalFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.botao-fechar { 
+    position: absolute; 
+    top: 20px; 
+    right: 20px; 
+    background: var(--retina); 
+    color: var(--branco); 
+    border: none; 
+    width: 40px; 
+    height: 40px; 
+    border-radius: 50%; 
+    cursor: pointer; 
+    font-size: 1.5rem; 
+    transition: var(--transicao); 
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+}
+
+.botao-fechar:hover { 
+    background: var(--enfoque); 
+    color: var(--retina); 
+    transform: rotate(90deg); 
+}
+
+.grade-livros-modal { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); 
+    gap: 20px; 
+    margin-top: 25px; 
+}
+
+.critica-grid { 
+    display: grid; 
+    grid-template-columns: 220px 1fr; 
+    gap: 40px; 
+    margin-top: 20px;
+}
+
+.critica-capa img { 
+    width: 100%; 
+    border-radius: 12px; 
+    box-shadow: var(--sombra);
+}
+
+.critica-form h2 { 
+    font-size: 1.8rem; 
+    margin-bottom: 10px; 
+    color: var(--retina);
+}
+
+.estrelas-rating { 
+    margin: 15px 0; 
+    display: flex; 
+    gap: 8px;
+}
+
+.estrelas-rating button { 
+    background: none; 
+    border: none; 
+    font-size: 2rem; 
+    color: #ccc; 
+    cursor: pointer; 
+    transition: var(--transicao); 
+}
+
+.estrelas-rating button.active, .estrelas-rating button:hover { 
+    color: var(--enfoque); 
+    text-shadow: 0 0 15px rgba(234, 191, 66, 0.5); 
+    transform: scale(1.1); 
+}
+
+/* O seletor por ID (`#critica-texto`) tem um peso de especificidade muito alto no CSS. 
+    Embora funcione bem em pequenos escopos, a regra geral de Clean Code front-end é 
+    dar preferência a seletores de classe (ex: '.campo-critica') para facilitar a reutilização de estilos.
+    Futuro ponto de melhoria aqui. */
+
+#critica-texto { 
+    width: 100%; 
+    height: 160px; 
+    padding: 20px; 
+    border-radius: 12px; 
+    border: 2px solid rgba(144, 171, 206, 0.3); 
+    background: var(--branco); 
+    font-family: inherit; 
+    font-size: 1rem; 
+    resize: vertical; 
+    margin-bottom: 20px; 
+    transition: var(--transicao); 
+    color: var(--retina); 
+}
+
+#critica-texto:focus { 
+    outline: none; 
+    border-color: var(--enfoque); 
+    box-shadow: 0 4px 15px rgba(234, 191, 66, 0.1); 
+}
+
+.botao-entrar { 
+    width: 100%; 
+    padding: 1.2rem; 
+    background: var(--retina); 
+    color: var(--branco); 
+    border: none; 
+    border-radius: 12px; 
+    font-weight: 700; 
+    font-size: 1rem; 
+    cursor: pointer; 
+    transition: var(--transicao); 
+    font-family: inherit; 
+}
+
+.botao-entrar:hover { 
+    background: var(--enfoque); 
+    color: var(--retina); 
+    transform: translateY(-2px); 
+    box-shadow: 0 10px 20px rgba(234, 191, 66, 0.2); 
+}
+
+/* Estilo do Seletor de Status no Modal */
+.seletor-status-modal {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    border: 2px solid rgba(144, 171, 206, 0.4);
+    background-color: var(--branco);
+    color: var(--retina);
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 0.9rem;
+    outline: none;
+    transition: var(--transicao);
+    cursor: pointer;
+}
+.seletor-status-modal:focus {
+    border-color: var(--enfoque);
+    box-shadow: 0 0 0 3px rgba(234, 191, 66, 0.2);
+}
+
+/* =======================================================================================
+    RODAPÉ (FOOTER)
+    ====================================================================================== */
+
+.rodape-principal {
+    background: var(--retina);
+    color: var(--branco);
+    padding: 3rem 5% 2rem;
+    margin-top: auto; /* Esse comando meio que "empurra" o footer para o final da tela */
+}
+
+.rodape-conteudo {
+    display: flex;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto 2rem;
+}
+
+.titulo-rodape {
+    color: var(--enfoque);
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    display: block;
+    margin-bottom: 1rem;
+}
+
+.rodape-principal a {
+    color: var(--nitidez);
+    text-decoration: none;
+    font-size: 0.85rem;
+    display: block;
+    margin-bottom: 0.6rem;
+    transition: var(--transicao);
+}
+
+.rodape-principal a:hover {
+    color: var(--enfoque);
+    padding-left: 5px; /* Efeitinho sutil de hover */
+}
+
+.rodape-direitos {
+    text-align: center;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding-top: 1.5rem;
+    color: var(--nitidez);
+}
+
+/* =======================================================================================
+    RESPONSIVIDADE (MOBILE E TABLET)
+    ====================================================================================== */
+
+@media (max-width: 992px) {
+    .container-principal { 
+        grid-template-columns: 1fr; 
+    }
+    .barra-lateral-stats { 
+        position: static; 
+        display: grid; 
+        grid-template-columns: 1fr 1fr; 
+    }
+    .critica-grid { 
+        grid-template-columns: 1fr; 
+    }
+    .critica-capa { 
+        display: none; 
+    }
+}
+
+@media (max-width: 768px) {
+    .cabecalho-phos { 
+        flex-direction: column; 
+        gap: 15px; 
+        padding: 1.5rem 5%; 
+    }
+    .container-busca { 
+        width: 100%; 
+    }
+    .barra-lateral-stats { 
+        grid-template-columns: 1fr; 
+    }
+    .cabecalho-secao { 
+        flex-direction: column; 
+        align-items: flex-start; 
+        gap: 15px; }
+}

@@ -1,0 +1,384 @@
+/* =======================================================================================
+    PHOS 2026 - LOGIN & ESTILO GLOBAL (STYLE.CSS)
+    ====================================================================================== */
+
+/* O uso de Custom Properties (variáveis) no :root 
+    aplica o princípio DRY (Don't Repeat Yourself) e cria uma "Single Source of Truth" 
+    (Única Fonte de Verdade) para o design system. */
+:root {
+    --retina: #161144;              /* Deep Night - Azul escuro Phos */
+    --nitidez: #90abce;             /* Serene Blue - Azul claro */
+    --enfoque: #eabf42;             /* Golden Hour - Amarelo */
+    --creme: #fdfaf1;               /* Fundo Editorial - Off-white */
+    --branco: #ffffff;
+    --borda-suave: rgba(0,0,0,0.05);
+    --raio: 24px;
+    --sombra: 0 20px 60px rgba(22, 17, 68, 0.12);
+    --transicao: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Reset Básico da página */
+* { 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box; 
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Estilo Global do Body com o truque do Background Múltiplo para criar a camada de cor
+sólida por baixo da imagem, garantindo que a imagem de fundo seja sutil e não conflite 
+com os textos e elementos da página. */ 
+
+body {
+    font-family: 'Open Sans', sans-serif;
+    color: var(--retina);
+    /* 2. O "truque" do Background Múltiplo */
+    background: 
+        /* Camada de Cima: Um gradiente da cor creme com 85% de opacidade */
+        linear-gradient(rgba(253, 250, 241, 0.85), rgba(253, 250, 241, 0.85)), 
+        /* Camada de Baixo: A imagem real */
+        url('/assets/phos-fundo.jpg');
+    
+    /* 3. Ajustes para a imagem preencher a tela e não rolar junto com o mouse */
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    position: relative; /* Essencial para "segurar" a imagem no lugar */
+    background-color: var(--creme); /* A cor sólida que vai aparecer no fundo */
+    min-height: 100vh;
+    z-index: 0;
+}
+
+/* 2. É necessário criar uma camada fantasma APENAS para a imagem */
+body::before {
+    content: ''; /* Passo obrigatório para o ::before existir */
+    position: absolute; /* Fixa na tela toda */
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%;
+    
+    background-image: url('/assets/phos-fundo.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    
+    /* A MÁGICA ACONTECE AQUI: */
+    opacity: 0.07; /* Coloquei só 7% de visibilidade para a imagem */
+    z-index: -1; /* Esse z-indez faz com que essa camada seja empurrada para trás de todos os textos e cards */
+}
+
+    /* =======================================================================================
+    BACKGROUND E LAYOUT DA PÁGINA DE LOGIN
+    ========================================================================================== */
+
+.pagina-login {
+    background: 
+        radial-gradient(circle at 10% 20%, rgba(144, 171, 206, 0.15) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(234, 191, 66, 0.1) 0%, transparent 40%),
+        var(--creme);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+    /* =======================================================================================
+    CABEÇALHO (HEADER)
+    ========================================================================================== */
+
+.cabecalho-phos {
+    width: 100%;
+    padding: 2rem 5%;
+    display: flex;
+    justify-content: center;
+    background: transparent;
+}
+
+/* Nomes de classes descritivos e com intenção clara (Intention-Revealing Names). 
+    `navegacao-principal` diz exatamente o que o elemento faz, diferentemente de 
+    um nome genérico como 'nav-1' ou 'top-box'. */
+.navegacao-principal {
+    width: 100%;
+    max-width: 1200px;
+    display: flex;
+    flex-direction: row; 
+    justify-content: space-between; /* Lembrar que esse comando setado faz com que o logo fique à esquerda e os botões, à direita */
+    align-items: center; 
+}
+
+.container-logo-nav {
+    display: flex;
+    align-items: center;
+}
+
+.logo-imagem-nav {
+    height: 65px;
+    /* Caso a imagem não carregue, aqui gera um tipo de fallback */
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+}
+
+/* Esse container agrupa os botões na direita */
+.botoes-nav {
+    display: flex;
+    flex-direction: row;
+    gap: 15px; /* Espaçamento automático entre os botões */
+    align-items: center;
+}
+
+/* Estilo do botão fantasma (aka Ghost Button) */
+.btn-ghost {
+    background: transparent;
+    border: 2px solid var(--retina);
+    color: var(--retina);
+    padding: 0.6rem 1.4rem;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    text-transform: lowercase;
+    /* Aqui, estou fazendo um tipo de "Programação defensiva" no CSS, forçando a margem a zero 
+        para previnir comportamentos inesperados herdados do navegador */
+    margin: 0; 
+    transition: var(--transicao);
+}
+
+.btn-ghost:hover {
+    background: var(--enfoque);
+    border-color: var(--enfoque);
+    color: var(--retina);
+    transform: translateY(-2px);
+}
+
+    /* =======================================================================================
+    SEÇÃO HERO (APRESENTAÇÃO CENTRAL)
+    ========================================================================================== */
+
+.area-apresentacao {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.container-central {
+    display: grid;
+    /* Uso sólido de CSS Grid. Valores rígidos como '420px' podem quebrar 
+    em telas muito específicas, mas tratei isso nas Media Queries no final 
+    do arquivo. */
+    grid-template-columns: 1fr 420px;
+    gap: 4rem;
+    max-width: 1100px;
+    width: 100%;
+    align-items: center;
+}
+
+.badge-phos {
+    display: inline-block;
+    padding: 8px 16px;
+    background: rgba(144, 171, 206, 0.2);
+    border-radius: 50px;
+    font-weight: 800;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    color: var(--retina);
+}
+
+.titulo-principal {
+    font-family: 'Montserrat', sans-serif;
+    /* A função 'clamp()' é uma técnica fantástica de CSS moderno, que reduz 
+    drasticamente a necessidade de múltiplas Media Queries, garantindo 
+    que a tipografia seja responsiva e fluída de forma limpa e concisa. */
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -2px;
+    margin-bottom: 1.5rem;
+}
+
+.destaque-italico {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    color: var(--enfoque);
+}
+
+/* Evite estilizar tags soltas aninhadas (como '.subtitulo p') quando possível, 
+    pois aumenta a especificidade do CSS, dificultando overrides futuros. O ideal 
+    seria dar uma classe direta ao parágrafo, ex: `.texto-subtitulo`. */
+.subtitulo p {
+    font-size: 1.1rem;
+    color: #444;
+}
+
+    /* =======================================================================================
+    CARD DE LOGIN
+    ========================================================================================== */
+
+.card-login {
+    background: var(--branco);
+    padding: 3rem;
+    border-radius: var(--raio);
+    box-shadow: var(--sombra);
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--borda-suave);
+}
+
+/* Detalhe colorido fofo no topo do card */
+.card-login::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 6px;
+    background: linear-gradient(90deg, var(--nitidez), var(--enfoque));
+}
+
+.card-header {
+    margin-bottom: 2rem;
+}
+
+.card-header h3 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.4rem;
+    margin-bottom: 0.3rem;
+}
+
+.card-header p {
+    color: var(--nitidez);
+    font-size: 0.9rem;
+}
+
+.grupo-entrada {
+    margin-bottom: 1.5rem;
+}
+
+.grupo-entrada label {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    color: var(--nitidez);
+    margin-bottom: 0.5rem;
+}
+
+.grupo-entrada input {
+    width: 100%;
+    padding: 1rem;
+    border: 1.5px solid #eee;
+    border-radius: 12px;
+    font-size: 1rem;
+    color: var(--retina);
+    transition: var(--transicao);
+    font-family: inherit;
+}
+
+/* Cuidado com a Acessibilidade visual. Remover o 'outline' padrão é comum, 
+    mas substituí-lo por uma borda e   'box-shadow' visíveis garante que a 
+    navegação por teclado (Tab) continue intuitiva e acessível. */
+.grupo-entrada input:focus {
+    outline: none;
+    border-color: var(--enfoque);
+    box-shadow: 0 0 0 4px rgba(234, 191, 66, 0.1);
+}
+
+.botao-entrar {
+    width: 100%;
+    padding: 1.2rem;
+    background: var(--retina);
+    color: var(--branco);
+    border: none;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: var(--transicao);
+    margin-top: 1rem;
+}
+
+.botao-entrar:hover {
+    background: var(--enfoque);
+    color: var(--retina);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(234, 191, 66, 0.2);
+}
+
+    /* =======================================================================================
+    RODAPÉ (FOOTER)
+    ========================================================================================== */
+
+.rodape-principal {
+    background: var(--retina);
+    color: var(--branco);
+    padding: 3rem 5% 2rem;
+    margin-top: auto; /* Esse comando meio que "empurra" o footer para o final da tela */
+}
+
+.rodape-conteudo {
+    display: flex;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto 2rem;
+}
+
+.titulo-rodape {
+    color: var(--enfoque);
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    display: block;
+    margin-bottom: 1rem;
+}
+
+.rodape-principal a {
+    color: var(--nitidez);
+    text-decoration: none;
+    font-size: 0.85rem;
+    display: block;
+    margin-bottom: 0.6rem;
+    transition: var(--transicao);
+}
+
+.rodape-principal a:hover {
+    color: var(--enfoque);
+    padding-left: 5px; /* Efeitinho sutil de hover */
+}
+
+.rodape-direitos {
+    text-align: center;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding-top: 1.5rem;
+    color: var(--nitidez);
+}
+
+    /* =======================================================================================
+    RESPONSIVIDADE (MOBILE & TABLET)
+    ========================================================================================== */
+
+/* Centralizar as Media Queries no final do arquivo é uma abordagem clássica que tentei aplicar no meu
+projeto. No entanto, em projetos escaláveis, muitos desenvolvedores preferem escrever a Media Query 
+logo abaixo do bloco principal do elemento, mantendo o contexto próximo. Ambas as formas são válidas, 
+mas vale a pena testar esse tipo em próximos updates! */
+
+@media (max-width: 900px) {
+    .container-central {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 3rem;
+    }
+
+    .badge-phos {
+        margin: 0 auto 1rem;
+    }
+
+    .card-login {
+        max-width: 450px;
+        margin: 0 auto;
+        text-align: left; /* Esse 'text-align' alinha o form à esquerda dentro do card */
+    }
+
+    .navegacao-principal {
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+}
