@@ -58,7 +58,9 @@ Trabalho estruturado em sprints para simular o fluxo de entrega de um ambiente �
 
 ## 🤖 Limitações Encontradas & Trabalhos Futuros
 
-Nesta versão do Phos, a persistência de dados é restrita ao localStorage do navegador, tornando as informações vulneráveis à limpeza de cache. Além disso, a API gratuita do Google Books apresentou restrições técnicas, como o retorno de obras sem capa ou com metadados incompletos. Devido ao escopo, os recursos de rede social foram adiados, priorizando a experiência de diário individual. Para trabalhos futuros, sugiro a implementação de um back-end com banco de dados em nuvem, funcionalidades de exportação do portfólio de leitura e a integração de interações sociais entre os usuários. Para facilitar a visualização do projeto, subi algumas capturas de tela na pasta `screenshots`, acesse. 
+Nesta versão do Phos, a persistência de dados é restrita ao localStorage do navegador, tornando as informações vulneráveis à limpeza de cache. Além disso, a API gratuita do Google Books apresentou restrições técnicas, como o retorno de obras sem capa ou com metadados incompletos. Devido ao escopo, os recursos de rede social foram adiados, priorizando a experiência de diário individual. 
+
+Para trabalhos futuros, sugiro a implementação de um back-end com banco de dados em nuvem, funcionalidades de exportação do portfólio de leitura e a integração de interações sociais entre os usuários. Para facilitar a visualização do projeto, subi algumas capturas de tela na pasta `screenshots`, acesse. 
 
 ## 📸 Screenshot
 
